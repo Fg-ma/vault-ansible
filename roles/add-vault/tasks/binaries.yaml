@@ -1,0 +1,13 @@
+- name: Check if Vault binary exists
+  stat:
+    path: "{{ vault_dir }}/bin/vault"
+  register: vault_bin
+
+- name: Copy Vault binary if not present
+  copy:
+    src: "{{ playbook_dir }}/../vault/vault"
+    dest: "{{ vault_dir }}/bin/vault"
+    owner: "{{ vault_agent_user }}"
+    group: "{{ vault_agent_group }}"
+    mode: "0550"
+  when: not vault_bin.stat.exists
