@@ -4,3 +4,4 @@ vault_agent_user: vaultagent
 vault_agent_group: vaultagent
 vault_agent_navigational_group: navigationalvaultagent
 vault_agent_authorities_group: authoritiesvaultagent
+vault_agent_bin_group: binvaultagent

@@ -8,6 +8,6 @@
     src: "{{ playbook_dir }}/../vault/vault"
     dest: "{{ vault_dir }}/bin/vault"
     owner: "{{ vault_agent_user }}"
-    group: "{{ vault_agent_group }}"
+    group: "{{ vault_agent_bin_group }}"
     mode: "0550"
   when: not vault_bin.stat.exists

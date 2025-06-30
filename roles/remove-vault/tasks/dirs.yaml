@@ -10,20 +10,31 @@
     regexp: '^tmpfs\s+{{ vault_dir }}/secrets\s+tmpfs'
     state: absent
   notify: Reload systemd
+# - name: Unmount vault dir if mounted
+#   mount:
+#     path: "{{ vault_dir }}"
+#     state: unmounted
+#   ignore_errors: true
 
-- name: Unmount vault dir if mounted
-  mount:
-    path: "{{ vault_dir }}"
-    state: unmounted
-  ignore_errors: true
+# - name: Remove vault dir entry from fstab
+#   lineinfile:
+#     path: /etc/fstab
+#     regexp: '^\S+\s+{{ vault_dir }}\s+'
+#     state: absent
 
-- name: Remove vault dir entry from fstab
-  lineinfile:
-    path: /etc/fstab
-    regexp: '^\S+\s+{{ vault_dir }}\s+'
-    state: absent
+# - name: Remove vault directory
+#   file:
+#     path: "{{ vault_dir }}"
+#     state: absent
+- name: Find all contents of the vault directory
+  find:
+    paths: "{{ vault_dir }}"
+    file_type: any
+    recurse: yes
+  register: vault_dir_contents
 
-- name: Remove vault directory
+- name: Remove all contents of the vault directory
   file:
-    path: "{{ vault_dir }}"
+    path: "{{ item.path }}"
     state: absent
+  with_items: "{{ vault_dir_contents.files }}"

@@ -13,6 +13,11 @@
     name: "{{ vault_agent_authorities_group }}"
     state: present
 
+- name: Ensure vault agent bin group exists
+  group:
+    name: "{{ vault_agent_bin_group }}"
+    state: present
+
 - name: Ensure vault agent user exists
   user:
     name: "{{ vault_agent_user }}"
@@ -20,4 +25,5 @@
       - "{{ vault_agent_group }}"
       - "{{ vault_agent_navigational_group }}"
       - "{{ vault_agent_authorities_group }}"
+      - "{{ vault_agent_bin_group }}"
     state: present
