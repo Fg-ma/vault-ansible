@@ -16,5 +16,8 @@
 - name: Ensure vault agent user exists
   user:
     name: "{{ vault_agent_user }}"
-    groups: "{{ vault_agent_group }} {{ vault_agent_navigational_group }} {{ vault_agent_authorities_group }}"
+    groups:
+      - "{{ vault_agent_group }}"
+      - "{{ vault_agent_navigational_group }}"
+      - "{{ vault_agent_authorities_group }}"
     state: present

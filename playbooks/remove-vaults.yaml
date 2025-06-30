@@ -1,5 +1,5 @@
 - name: Remove vault from node
-  hosts: new-vaults
+  hosts: remove_vaults
   become: true
   vars_files:
     - ../vars/vault.yaml

@@ -73,6 +73,13 @@
     opts: nodev,nosuid,noexec,size=32K
     state: mounted
 
+- name: Set ownership on mounted tmpfs
+  file:
+    path: "{{ vault_dir }}/secrets"
+    owner: "{{ vault_agent_user }}"
+    group: "{{ vault_agent_navigational_group }}"
+    mode: "0710"
+
 - name: Copy ca.pem
   copy:
     src: "{{ ca_path }}"
