@@ -48,14 +48,6 @@
     mode: "0755"
 
 # certs
-- name: Set ownership and permissions on {{ vault_dir }}/secrets
-  file:
-    path: "{{ vault_dir }}/secrets"
-    state: directory
-    owner: "{{ vault_agent_user }}"
-    group: "{{ vault_agent_navigational_group }}"
-    mode: "0710"
-
 - name: Add tmpfs mount to fstab (if not already present)
   lineinfile:
     path: /etc/fstab
@@ -79,6 +71,35 @@
     owner: "{{ vault_agent_user }}"
     group: "{{ vault_agent_navigational_group }}"
     mode: "0710"
+
+- name: Create systemd unit to set Vault tmpfs permissions
+  copy:
+    dest: /etc/systemd/system/vault-init.service
+    owner: root
+    group: root
+    mode: "0640"
+    content: |
+      [Unit]
+      Description=Set ownership for Vault Agent tmpfs secrets
+      After=local-fs.target
+      Before=mongo-vault-agent.service
+
+      [Service]
+      Type=oneshot
+      ExecStart=/bin/chown {{ vault_agent_user }}:{{ vault_agent_navigational_group }} {{ vault_dir }}/secrets
+      ExecStart=/bin/chmod 0710 {{ vault_dir }}/secrets
+      RemainAfterExit=yes
+
+      [Install]
+      WantedBy=multi-user.target
+
+- name: Reload systemd daemon
+  command: systemctl daemon-reload
+
+- name: Enable vault-agent init systemd service
+  systemd:
+    name: vault-init.service
+    enabled: true
 
 - name: Copy ca.pem
   copy:

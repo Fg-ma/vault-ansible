@@ -1,3 +1,23 @@
+- name: Stop vault-init systemd service (if running)
+  systemd:
+    name: vault-init.service
+    state: stopped
+    enabled: false
+
+- name: Disable vault-init systemd service
+  systemd:
+    name: vault-init.service
+    enabled: false
+    masked: no
+
+- name: Remove vault-init systemd unit file
+  file:
+    path: /etc/systemd/system/vault-init.service
+    state: absent
+
+- name: Reload systemd daemon after removing vault-init unit
+  command: systemctl daemon-reload
+
 - name: Unmount tmpfs if mounted
   mount:
     path: "{{ vault_dir }}/secrets"
@@ -10,6 +30,7 @@
     regexp: '^tmpfs\s+{{ vault_dir }}/secrets\s+tmpfs'
     state: absent
   notify: Reload systemd
+
 # - name: Unmount vault dir if mounted
 #   mount:
 #     path: "{{ vault_dir }}"
@@ -26,6 +47,7 @@
 #   file:
 #     path: "{{ vault_dir }}"
 #     state: absent
+
 - name: Find all contents of the vault directory
   find:
     paths: "{{ vault_dir }}"
@@ -38,3 +60,8 @@
     path: "{{ item.path }}"
     state: absent
   with_items: "{{ vault_dir_contents.files }}"
+
+- name: Remove /etc/profile.d/vault_path.sh
+  file:
+    path: /etc/profile.d/vault_path.sh
+    state: absent
