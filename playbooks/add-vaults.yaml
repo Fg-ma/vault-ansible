@@ -5,3 +5,4 @@
     - ../vars/vault.yaml
   roles:
     - role: add-vault
+    - role: apparmor-vault

@@ -6,3 +6,6 @@
 
 - name: Include dirs tasks
   import_tasks: dirs.yaml
+
+- name: Include apparmor tasks
+  import_tasks: apparmor.yaml
