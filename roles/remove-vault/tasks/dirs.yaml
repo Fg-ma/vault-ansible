@@ -3,12 +3,14 @@
     name: vault-init.service
     state: stopped
     enabled: false
+  ignore_errors: true
 
 - name: Disable vault-init systemd service
   systemd:
     name: vault-init.service
     enabled: false
     masked: no
+  ignore_errors: true
 
 - name: Remove vault-init systemd unit file
   file:

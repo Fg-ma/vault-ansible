@@ -66,4 +66,10 @@
   /etc/nsswitch.conf r,
   /etc/resolv.conf r,
   /usr/share/zoneinfo/** r,
+
+  /usr/bin/dash ix,
+
+  /etc/ld.so.cache r,
+  /lib/x86_64-linux-gnu/ld-*.so rix,
+  /usr/lib/x86_64-linux-gnu/libc.so.* mr,
 }
