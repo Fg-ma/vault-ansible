@@ -31,6 +31,14 @@
     group: "{{ vault_agent_navigational_group }}"
     mode: "0710"
 
+- name: Create vault authorities directories
+  file:
+    path: "{{ vault_dir }}/certs"
+    state: directory
+    owner: "{{ vault_agent_user }}"
+    group: "{{ vault_agent_navigational_group }}"
+    mode: "0710"
+
 # bin
 - name: Create {{ vault_dir }}/bin directory
   file:
@@ -100,24 +108,6 @@
   systemd:
     name: vault-init.service
     enabled: true
-
-- name: Copy ca.pem
-  copy:
-    src: "{{ ca_path }}"
-    dest: "{{ vault_dir }}/authorities/ca.pem"
-    owner: "{{ vault_agent_user }}"
-    group: "{{ vault_agent_authorities_group }}"
-    mode: "0740"
-
-- name: Copy ca cert into system store
-  become: true
-  copy:
-    remote_src: true
-    src: "{{ vault_dir }}/authorities/ca.pem"
-    dest: /usr/local/share/ca-certificates/vault-ca.crt
-    owner: root
-    group: root
-    mode: "0640"
 
 - name: Update the system ca certificates
   become: true
