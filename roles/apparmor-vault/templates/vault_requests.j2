@@ -1,0 +1,30 @@
+#include <tunables/global>
+
+/mnt/vault/bin/vault_requests {
+  # Allow read access to certs/keys
+  {{ vault_dir }}/certs/mongo/** r,
+
+  # Allow DNS resolution and TCP connections
+  network inet stream,
+  network inet6 stream,
+  capability net_bind_service,
+
+  # Allow execution and read-only access to vault_requests binary itself
+  {{ vault_dir }}/bin/vault_requests rix,
+
+  # Allow shared libraries
+  /lib/x86_64-linux-gnu/libssl.so.*           mr,
+  /lib/x86_64-linux-gnu/libcrypto.so.*        mr,
+  /lib/x86_64-linux-gnu/libstdc++.so.*        mr,
+  /lib/x86_64-linux-gnu/libgcc_s.so.*         mr,
+  /lib/x86_64-linux-gnu/libc.so.*             mr,
+  /lib/x86_64-linux-gnu/libm.so.*             mr,
+  /lib64/ld-linux-x86-64.so.*                 mr,
+
+  # Allow /etc/hosts and DNS resolution
+  /etc/hosts r,
+  /etc/resolv.conf r,
+
+  # Allow logging
+  /dev/log w,
+}
