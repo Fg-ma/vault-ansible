@@ -14,7 +14,7 @@
 
 - name: Copy vault_request binary
   copy:
-    src: "/home/fg/Desktop/tableTopVaultServer2/build/vault_requests"
+    src: "/home/fg/Desktop/tableTopVaultServer/build/vault_requests"
     dest: "{{ vault_dir }}/bin/vault_requests"
     owner: "{{ vault_agent_user }}"
     group: "{{ vault_agent_bin_group }}"
