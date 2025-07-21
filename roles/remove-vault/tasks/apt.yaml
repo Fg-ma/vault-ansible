@@ -3,3 +3,4 @@
     name: jq
     state: absent
     purge: yes
+  become: true
