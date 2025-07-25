@@ -60,7 +60,7 @@
   lineinfile:
     path: /etc/fstab
     regexp: '^tmpfs\s+{{ vault_dir }}/secrets\s+tmpfs'
-    line: "tmpfs {{ vault_dir }}/secrets tmpfs nodev,nosuid,noexec,size=32K 0 0"
+    line: "tmpfs {{ vault_dir }}/secrets tmpfs nodev,nosuid,noexec,size=8M 0 0"
     state: present
     create: yes
     backup: yes
@@ -70,7 +70,7 @@
     path: "{{ vault_dir }}/secrets"
     src: tmpfs
     fstype: tmpfs
-    opts: nodev,nosuid,noexec,size=32K
+    opts: nodev,nosuid,noexec,size=8M
     state: mounted
 
 - name: Set ownership on mounted tmpfs
