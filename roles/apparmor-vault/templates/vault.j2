@@ -23,8 +23,8 @@
   network inet dgram,
   network inet6 dgram,
   network netlink raw,
-  unix (send, receive) type=stream,
-  unix (create, send, receive) type=dgram,
+  unix (send, receive, create, connect) type=stream,
+  unix (create, send, receive, connect, bind, getattr) type=dgram,
   signal (send, receive) peer={{ vault_dir }}/bin/vault,
   signal receive set=(term,kill,cont,stop,hup,int,usr1,usr2,exists) peer=unconfined,
 
